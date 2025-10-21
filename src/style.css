@@ -1,0 +1,410 @@
+/* =============== TOKENS & GRID =============== */
+.app-shell{
+  /* tokens */
+  --topbar-h:56px; --sidebar-w:80px;
+  --surface:#fff; --ground:#f5f5f5;
+  --text:#0f172a; --muted:#6b7280; --side-bg:#0f172a;
+
+  /* tabs (browser) */
+  --tab-h:36px; --tab-pad-x:14px; --tab-radius:12px; --tab-gap:10px;
+  --tab-inactive-bg:#f5f5f5; --tab-inactive-fg:#111827; --tab-border:#d8dbe2;
+  --tab-active-bg:#FCC800;   --tab-active-fg:#111827;  --tab-active-border:#cfd3da;
+
+  /* layout */
+  min-height:100vh; width:100vw; height:100vh;
+  display:grid;
+  grid-template-columns:var(--sidebar-w) minmax(0,1fr);
+  grid-template-rows:var(--topbar-h) 1fr;
+  grid-template-areas:
+    "topbar topbar"
+    "sidebar content";
+  background:var(--ground);
+  overflow:hidden;
+}
+
+/* === Language switch (topbar) === */
+.topbar{ overflow: visible;   z-index: 1000;   overflow: visible;}  /* permite o dropdown sair da barra */
+
+.lang-switch{
+  position: relative;
+  z-index: 6;
+}
+
+.lang-btn{
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--text);
+  cursor: pointer;
+}
+.lang-btn .flag{ font-size: 18px; line-height: 1; }
+.lang-btn .lang-code{ font-weight: 600; font-size: .85rem; }
+.lang-btn .caret{ width: 12px; height: 12px; opacity: .7; }
+
+.lang-menu{
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  min-width: 180px;
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  background: #fff;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,.08);
+  z-index: 2000;
+}
+
+.square-frame{ position: relative; z-index: 0; }
+
+
+.lang-menu li{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.lang-menu li:hover{ background: rgba(0,0,0,.04); }
+.lang-menu li.active{
+  background: rgba(0,0,0,.06);
+  font-weight: 600;
+}
+.lang-menu .flag{ font-size: 18px; line-height: 1; }
+.lang-menu .label{ font-size: .95rem; }
+
+/* =============== TOPBAR =============== */
+.topbar{
+  grid-area:topbar;
+  display:grid;
+  grid-template-columns:auto minmax(0,1fr) auto; /* logo | tabs | ações */
+  align-items:center; gap:8px;
+  background:#0f172a;
+  padding:0 8px;
+  position:relative;
+  overflow:visible;   /* <<< was hidden */
+  z-index:1000;       /* acima do conteúdo */
+}
+.top-left{display:flex;align-items:center;gap:8px;}
+.brand{ height:28px; width:auto; max-height:calc(100% - 8px); object-fit:contain; display:block; }
+.top-actions { position: relative; z-index: 2; display: inline-flex; align-items: center; gap: 8px; }
+
+.help-btn{
+  display:inline-flex; align-items:center; gap:8px;
+  height:32px; padding:0 10px;
+  border:1px solid rgba(0,0,0,0.08);
+  border-radius:8px;
+  background:#fff; color:#0f172a;   /* contrasta com topbar escura */
+  cursor:pointer;
+}
+.help-btn .icn{ width:14px; height:14px; }
+.help-btn .label{ font-weight:600; font-size:.85rem; }
+.help-btn:hover{ background:#f7f7f7; }
+/* =============== TABS (NAVEGADOR) =============== */
+.topbar .tab-list{
+  list-style:none; margin:0; padding:0 12px;
+  height:var(--topbar-h);
+  display:flex; align-items:flex-end; gap:var(--tab-gap);
+  min-width:0; white-space:nowrap; overflow-x:auto; overflow-y:hidden;
+}
+
+.topbar .tab-item{
+  position:relative; display:inline-flex; align-items:center;
+}
+
+/* topo arredondado + base reta, sem "pular" altura */
+.topbar .tab-btn{
+  display:inline-flex; align-items:center; gap:10px;
+  height:var(--tab-h);
+  padding:0 var(--tab-pad-x);
+  background:var(--tab-inactive-bg);
+  color:var(--tab-inactive-fg);
+  border: 1px solid transparent !important;
+
+  border-bottom:0; /* base reta (funde com o conteúdo) */
+  border-top-left-radius:var(--tab-radius);
+  border-top-right-radius:var(--tab-radius);
+  border-bottom-left-radius:0;
+  border-bottom-right-radius:0;
+  cursor:pointer; user-select:none;
+  font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.02em;
+  transition:background .15s,color .15s,box-shadow .15s,filter .15s,border-color .15s;
+  outline:none; -webkit-tap-highlight-color:transparent;
+}
+
+.topbar .tab-btn:hover{ filter:brightness(.97); }
+
+/* ativa = mesma altura, sem "cápsula", fundida na base */
+.topbar .tab-item.active .tab-btn{
+  background:var(--tab-active-bg);
+  color:var(--tab-active-fg);
+  border-color:var(--tab-active-border);
+  box-shadow:none;
+}
+
+/* "ponte" 1px para cobrir a borda inferior da topbar sob a aba ativa */
+.topbar .tab-item.active::after{
+  content:"";
+  position:absolute; left:1px; right:1px; bottom:-1px; height:1px;
+  background:var(--surface);
+  z-index:1;
+}
+
+.topbar .tab-title{ white-space:nowrap; }
+
+/* X DENTRO da aba (não altera altura) */
+.topbar .tab-x{
+  margin-left:8px; width:18px; height:18px;
+  display:grid; place-items:center;
+  border-radius:9px; background:transparent; color:inherit;
+  cursor:pointer; transition:background .15s; outline:none;
+}
+.topbar .tab-x:hover{ background:rgba(0,0,0,.08); }
+.topbar .tab-x svg{ width:12px; height:12px; }
+
+/* sem linha/halo no click/focus */
+.topbar .tab-btn:focus, .topbar .tab-btn:active,
+.topbar .tab-x:focus,  .topbar .tab-x:active{
+  outline:none; box-shadow:none;
+}
+
+/* =============== SIDEBAR =============== */
+/* =============== SIDEBAR (alinhamento dos ícones) =============== */
+/* =============== SIDEBAR (arrumado) =============== */
+/* ======== SIDEBAR arrumada (ícone + label empilhados) ======== */
+.sidebar{
+  grid-area:sidebar;
+  background:#0f172a; color:#fff;
+  display:flex; flex-direction:column; align-items:center;
+  padding:12px 8px; gap:12px;
+  border-right:1px solid rgba(0,0,0,.06);
+  position:relative; isolation:isolate; z-index:900;
+}
+.app-shell { --sidebar-w: 104px; } /* 96–112px funciona bem */
+
+.side-header{
+  width:100%; text-align:center;
+  color:#9ca3af; font-size:.7rem; letter-spacing:.08em;
+  text-transform:uppercase; padding:6px 4px 2px;
+}
+
+.side-icons{
+  display:flex; flex-direction:column; align-items:center;
+  gap:10px; margin-top:4px; width:100%;
+}
+
+/* botão com conteúdo VERTICAL (icon em cima, texto embaixo) */
+.icon-btn{
+  position:relative;
+  width:72px;                 /* mais largo p/ caber o texto */
+  padding:10px 6px;           /* sem altura fixa */
+  border-radius:14px;
+  display:flex; flex-direction:column; align-items:center; gap:6px;
+  color:#cfd9e3; background:transparent; border:0; cursor:pointer;
+  transition:background .15s, color .15s;
+}
+
+.icon-btn:hover{ background:rgba(255,255,255,.08); color:#fff; }
+.icon-btn.active{ background:rgba(255,255,255,.16); color:#fff; }
+.icon-btn.danger:hover{ background:rgba(189, 50, 50, 0.524); }
+
+/* ícone FA (SVG) com caixa fixa e centralizado */
+.icon-btn .fa,
+.icon-btn svg{
+  display:block; width:22px; height:22px; fill:currentColor;
+}
+
+/* rótulo sob o ícone, quebra controlada */
+.icon-label{
+  font-size:.62rem; line-height:1.1; text-align:center;
+  max-width:60px; word-break:break-word; white-space:normal;
+}
+
+/* badge dentro do botão, sem sair do rail */
+.badge{
+  position:absolute; top:6px; right:6px;
+  min-width:18px; height:18px; padding:0 5px;
+  display:grid; place-items:center;
+  background:#ef4444; color:#fff; border-radius:999px;
+  font-size:.7rem; font-weight:700;
+}
+
+
+/* =============== CONTEÚDO =============== */
+.content{ grid-area:content; padding:16px; background:var(--ground); min-width:0; min-height:0; }
+.canvas{ width:100%; height:100%; }
+
+/* se quiser um container central, descomente e ajuste:
+.square-frame{ width:100%; height:100%; background:#fff; border-radius:12px; box-shadow:0 10px 30px rgba(0,0,0,.06); padding:24px; }
+*/
+
+/* =============== RESPONSIVO =============== */
+@media (max-width:768px){
+  .app-shell{ grid-template-columns:64px minmax(0,1fr); }
+  .brand{ height:20px; }
+  .icon-btn{ width:44px; height:44px; }
+  .icon-label{display: none;}
+}
+
+/* ===== Tabs strip (não altera sidebar) ===== */
+.topbar .tab-list{
+  list-style:none; margin:0; padding:0 12px;
+  height:var(--topbar-h,56px);
+  display:flex; align-items:flex-end; gap:var(--tab-gap,10px);
+  min-width:0; white-space:nowrap; overflow-x:auto; overflow-y:hidden;
+  scrollbar-width:none;
+}
+.topbar .tab-list::-webkit-scrollbar{ display:none; }
+
+.topbar .tab-item{ position:relative; display:inline-flex; align-items:center; }
+
+.topbar .tab-btn{
+  display:flex; align-items:center; gap:10px;
+  height:var(--tab-h,36px);
+  padding:0 var(--tab-pad-x,14px);
+  background:var(--tab-inactive-bg,#f5f5f5);
+  color:var(--tab-inactive-fg,#111827);
+  border:1px solid var(--tab-border,#d8dbe2);
+  border-bottom:0;
+  border-top-left-radius:var(--tab-radius,12px);
+  border-top-right-radius:var(--tab-radius,12px);
+  cursor:pointer; user-select:none; outline:none;
+  font-size:var(--tab-fs,.82rem); font-weight:700; text-transform:uppercase; letter-spacing:.02em;
+  transition:background .15s, color .15s, border-color .15s, filter .15s;
+}
+
+/* título com truncamento progressivo */
+.topbar .tab-title{
+  min-width:0;
+  max-width:var(--tab-title-max,14ch);
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+
+/* X sempre com espaço reservado (sem shift) */
+.topbar .tab-x{
+  display:grid; place-items:center;
+  width:18px; height:18px; margin-left:6px;
+  border-radius:9px; flex:0 0 auto;
+}
+.topbar .tab-x:hover{ background:rgba(0,0,0,.08); }
+.topbar .tab-x svg{ width:12px; height:12px; }
+
+/* ativa "fundida" com o conteúdo */
+.topbar .tab-item.active .tab-btn{
+  background:var(--tab-active-bg,#FCC800);
+  color:var(--tab-active-fg,#111827);
+  border-color:var(--tab-active-border,#cfd3da);
+}
+.topbar .tab-item.active::after{
+  content:""; position:absolute; left:1px; right:1px; bottom:-1px; height:1px;
+  background:var(--surface,#fff); z-index:1;
+}
+
+/* densidades (0→3) */
+.topbar .tab-list.density-0 { --tab-pad-x:14px; --tab-fs:.82rem; --tab-gap:10px; --tab-title-max:14ch; }
+.topbar .tab-list.density-1 { --tab-pad-x:10px; --tab-fs:.78rem; --tab-gap:8px;  --tab-title-max:10ch; }
+.topbar .tab-list.density-2 { --tab-pad-x:8px;  --tab-fs:.74rem; --tab-gap:6px;  --tab-title-max:6ch;  }
+.topbar .tab-list.density-3 { --tab-pad-x:6px;  --tab-fs:.72rem; --tab-gap:4px;  --tab-title-max:0ch;  }
+
+/* estados do draggable */
+.tab-ghost{ opacity:.6; }
+.tab-chosen .tab-btn{ filter:brightness(.97); }
+.tab-drag   .tab-btn{ box-shadow:0 6px 20px rgba(0,0,0,.12); }
+
+/* X desativado (ex.: Home) */
+.topbar .tab-x.disabled{
+  display: none;
+}
+
+/* ===== layout base (mantém seu design) ===== */
+html, body, #app { height: 100%; margin: 0; padding: 0; }
+
+.auth-shell {
+  min-height: 100vh; width: 100vw;
+  display: flex; align-items: center; justify-content: center;
+  background:#f5f5f5;
+}
+
+.auth-card { background: var(--surface-card, #fff); border-radius: 12px; }
+
+/* reserva altura pro banner sem "pular" */
+.form-alert { min-height: 2.25rem; }
+
+/* ===== inputs (mantém tua escala e bordas custom) ===== */
+.ctl-input {
+  font-size: 1.05rem;
+  height: 3rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 2px solid #c7cad1;
+  transition: border-color .15s ease, box-shadow .15s ease;
+  outline: none;
+}
+.ctl-input:hover {
+  border-color: var(--primary-hover-color, #E0B200) !important;
+}
+.ctl-input:focus {
+  border-color: var(--focus-ring-color, #FCC800) !important;
+  box-shadow: 0 0 0 3px rgba(252,200,0,.28) !important;
+}
+.ctl-input.p-invalid {
+  border-color: #DC2626 !important;
+  box-shadow: 0 0 0 2px rgba(220,38,38,.18) !important;
+}
+
+/* ===== botão primário (amarelo) ===== */
+.custom-login-btn {
+  height: 3rem;
+  border-radius: 12px;
+  background-color: var(--primary-color, #FCC800) !important;
+  border-color: var(--primary-color, #FCC800) !important;
+  color: var(--primary-color-text, #0D1F2E) !important;
+}
+.custom-login-btn:hover {
+  background-color: var(--primary-hover-color, #E0B200) !important;
+  border-color: var(--primary-hover-color, #E0B200) !important;
+}
+
+/* suporte */
+.support-line { margin-top: .25rem; color: var(--text-color-secondary, #6B7280); }
+.support-link { color: var(--text-color, #111827); text-decoration: underline; }
+.support-link:hover { color: var(--primary-hover-color, #E0B200); }
+
+/* animações entre steps */
+.transition-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.slide-left-enter-active, .slide-left-leave-active,
+.slide-right-enter-active, .slide-right-leave-active { 
+  transition: all .22s ease; 
+}
+.slide-left-enter-from { 
+  opacity: 0; 
+  transform: translateX(16px); 
+}
+.slide-left-leave-to { 
+  opacity: 0; 
+  transform: translateX(-16px); 
+}
+.slide-right-enter-from { 
+  opacity: 0; 
+  transform: translateX(-16px); 
+}
+.slide-right-leave-to { 
+  opacity: 0; 
+  transform: translateX(16px); 
+}
+
+
+/* logo */
+.logo-auth { display: block; }
