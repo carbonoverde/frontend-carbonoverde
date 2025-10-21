@@ -87,7 +87,7 @@
   display:grid;
   grid-template-columns:auto minmax(0,1fr) auto; /* logo | tabs | ações */
   align-items:center; gap:8px;
-  background:#0f172a;
+  background:#1cb429;
   padding:0 8px;
   position:relative;
   overflow:visible;   /* <<< was hidden */
@@ -182,7 +182,7 @@
 /* ======== SIDEBAR arrumada (ícone + label empilhados) ======== */
 .sidebar{
   grid-area:sidebar;
-  background:#0f172a; color:#fff;
+  background:#1cb429; color:#fff;
   display:flex; flex-direction:column; align-items:center;
   padding:12px 8px; gap:12px;
   border-right:1px solid rgba(0,0,0,.06);
@@ -192,7 +192,7 @@
 
 .side-header{
   width:100%; text-align:center;
-  color:#9ca3af; font-size:.7rem; letter-spacing:.08em;
+  color:#173d10; font-size:.7rem; letter-spacing:.08em;
   text-transform:uppercase; padding:6px 4px 2px;
 }
 

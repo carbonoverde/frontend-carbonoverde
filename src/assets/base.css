@@ -2,10 +2,10 @@
   /* cores principais */
   --primary-color: #FCC800;
   --primary-hover-color: #E0B200;
-  --primary-color-text: #0D1F2E;   /* texto sobre botão primário */
+  --primary-color-text: #1cb429;   /* texto sobre botão primário */
 
-  --secondary-color: #0D1F2E;
-  --secondary-hover-color: #1B3346;
+  --secondary-color: #1cb429;
+  --secondary-hover-color: #1cb429;
   --secondary-color-text: #ffffff;
 
   /* feedback */

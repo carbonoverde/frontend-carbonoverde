@@ -110,7 +110,9 @@ const LoginView = () => {
   return (
     <div className="auth-shell">
       <div className="flex flex-column align-items-center justify-content-center gap-4 p-3 w-full">
-        <img src="/solidfield_logo.svg" alt="SolidField" className="logo-auth w-auto h-4rem md:h-5rem" />
+        <div className="logo-auth w-auto h-4rem md:h-5rem flex align-items-center justify-content-center">
+          <h1 className="text-3xl font-bold text-primary">Carbon Overde</h1>
+        </div>
         {message.show && (
           <Message severity={message.type} closable={false} className="w-full">
             {message.text}
@@ -184,7 +186,7 @@ const LoginView = () => {
                     {/* linha de suporte */}
                     <div className="text-center text-sm support-line">
                       Having trouble with technician access?
-                      <a className="support-link" href="mailto:support@solidfield.com">Contact your administrator</a>.
+                      <a className="support-link" href="mailto:support@carbonoverde.com">Contact your administrator</a>.
                     </div>
                   </div>
                 </form>
@@ -264,7 +266,7 @@ const LoginView = () => {
                   {/* linha de suporte */}
                   <div className="text-center text-sm support-line">
                     Having trouble with technician access?
-                    <a className="support-link" href="mailto:support@solidfield.com">Contact your administrator</a>.
+                    <a className="support-link" href="mailto:support@carbonoverde.com">Contact your administrator</a>.
                   </div>
                 </form>
               )}
