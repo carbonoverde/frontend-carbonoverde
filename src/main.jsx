@@ -12,6 +12,7 @@ import 'primeflex/primeflex.css'
 import './assets/base.css'
 import '@fontsource-variable/inter'
 import 'flag-icons/css/flag-icons.min.css'
+import 'leaflet/dist/leaflet.css';
 
 // FontAwesome icons
 import { library } from '@fortawesome/fontawesome-svg-core'

@@ -5,6 +5,7 @@ import OrdersView from '@/views/OrdersView'
 import OperationsView from '@/views/OperationsView'
 import CustomersView from '@/views/CustomersView'
 import SettingsView from '@/views/SettingsView'
+import DashboardView from '../views/DashboardView'
 
 export const AppRoutes = () => {
   return (
@@ -14,6 +15,7 @@ export const AppRoutes = () => {
       <Route path="/operations" element={<OperationsView />} />
       <Route path="/customers" element={<CustomersView />} />
       <Route path="/settings" element={<SettingsView />} />
+      <Route path="/dashboard" element={<DashboardView/>} />
     </Routes>
   )
 }
