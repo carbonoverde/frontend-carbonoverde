@@ -140,7 +140,7 @@ const LoginView = () => {
               {step === 'company' && (
                 <form
                   key="company"
-                  className="flex flex-column gap-4 border-5"
+                  className="flex flex-column gap-4"
                   onSubmit={onSubmitCompany}
                   noValidate
                 >
