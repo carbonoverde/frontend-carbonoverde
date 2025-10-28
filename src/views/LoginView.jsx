@@ -111,7 +111,7 @@ const LoginView = () => {
     <div className="auth-shell">
       <div className="flex flex-column align-items-center justify-content-center gap-4 p-3 w-full">
         <div className="logo-auth w-auto h-4rem md:h-5rem flex align-items-center justify-content-center">
-          <h1 className="text-3xl font-bold text-primary">Carbon Overde</h1>
+          <h1 className="text-6xl font-bold text-primary">Carbon Overde</h1>
         </div>
         {message.show && (
           <Message severity={message.type} closable={false} className="w-full">
@@ -124,7 +124,7 @@ const LoginView = () => {
             {step === 'company' ? 'Identify Your Company' : 'Access Workspace'}
           </div>
 
-          <div className="card-content">
+          <div className="card-content ">
             {/* Banner compacto no topo (sem deformar) */}
             <div className="form-alert">
               {showBanner && (
@@ -140,18 +140,22 @@ const LoginView = () => {
               {step === 'company' && (
                 <form
                   key="company"
-                  className="flex flex-column gap-4"
+                  className="flex flex-column gap-4 border-5"
                   onSubmit={onSubmitCompany}
                   noValidate
                 >
                   <div className="flex flex-column gap-2 align-items-center">
-                    <label className="text-sm font-medium text-center">Choose an identifier</label>
+                    <label className="text-sm font-medium text-center" >Choose an identifier</label>
                     <SelectButton
                       value={identifierType}
                       onChange={(e) => setIdentifierType(e.value)}
                       options={identifierTypeOptions}
                       optionLabel="label"
                       optionValue="value"
+                       pt={{
+                        root: { className: "flex gap-4" },      // container principal
+                      }}
+                      
                     />
                   </div>
 
@@ -234,10 +238,10 @@ const LoginView = () => {
                       onChange={(e) => setPassword(e.target.value)}
                       feedback={false}
                       toggleMask
-                      className="w-full"
+                      className="w-fulls"
                       invalid={touchedAuth.password && !!passwordError}
                       inputProps={{
-                        className: 'w-full ctl-input',
+                        className: 'w-full',
                         placeholder: '••••••••',
                         autoComplete: 'current-password',
                         onInput: () => setTouchedAuth(prev => ({ ...prev, password: true })),
@@ -247,9 +251,9 @@ const LoginView = () => {
                   </div>
 
                   <div className="flex align-items-center justify-content-between">
-                  <div className="flex align-items-center gap-2">
+                  <div className="flex align-items-center gap-1">
                     <Checkbox inputId="remember" checked={remember} onChange={(e) => setRememberState(e.checked)} />
-                    <label htmlFor="remember" className="text-sm">Remember me</label>
+                    <label htmlFor="remember" className="text-sm remenber">Remember me</label>
                   </div>
                     <a className="text-sm cursor-pointer link-muted">Forgot password?</a>
                   </div>

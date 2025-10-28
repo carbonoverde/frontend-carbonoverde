@@ -1,8 +1,8 @@
 :root {
   /* cores principais */
-  --primary-color: #FCC800;
-  --primary-hover-color: #E0B200;
-  --primary-color-text: #1cb429;   /* texto sobre botão primário */
+  --primary-color: #FACC15;
+  --primary-hover-color: #FACC15;
+  --primary-color-text: #FACC15;   /* texto sobre botão primário */
 
   --secondary-color: #1cb429;
   --secondary-hover-color: #1cb429;
@@ -15,8 +15,8 @@
 
   /* neutros */
   --surface-ground: #F9FAFB;  /* fundo das telas */
-  --surface-card: #ffffff;    /* fundo dos cards */
-  --text-color: #111827;
+  --surface-card: #F4F4F5;    /* fundo dos cards */
+  --text-color: #1F2937;
   --text-color-secondary: #6B7280;
 }
 
@@ -24,6 +24,74 @@
   --font-inter: "Inter", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
   /* Para PrimeVue styled mode (v4+): */
   --p-font-family: var(--font-inter);
+}
+
+.remenber {
+  margin-bottom: 1.2px;
+}
+
+.p-checkbox-icon {
+  position: absolute;
+  opacity: 0;
+}
+
+.p-input-icon {
+  margin-left: 10px;
+  transition: all 0.3s;
+}
+
+.p-input-icon:hover {
+  color: #dfb50e;
+}
+
+.p-password-input {
+ font-size: 1.05rem;
+  height: 3rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  border: 2px solid #c7cad1;
+  transition: border-color .15s ease, box-shadow .15s ease;
+  outline: none;
+}
+
+.p-password-input:hover {
+  border-color: var(--primary-hover-color, #E0B200) !important;
+}
+.p-password-input:focus {
+  border-color: var(--focus-ring-color, #FCC800) !important;
+  box-shadow: 0 0 0 3px rgba(252,200,0,.28) !important;
+}
+.p-password-input.p-invalid {
+  border-color: #DC2626 !important;
+  box-shadow: 0 0 0 2px rgba(220,38,38,.18) !important;
+}
+
+.link-muted:hover {
+  color: #FACC15 !important;
+}
+
+.p-button-text {
+  color: rgb(7, 7, 7) !important;
+  border: none;
+  gap: 5px;
+  transition: all 0.3s;
+}
+
+.p-button-text:hover {
+  color: #dfb50e !important;
+  border-radius: 0.375rem !important;
+}
+
+.p-selectbutton .p-button {
+   /* bg-green-600 */
+  color: rgb(7, 7, 7) !important;
+  border-radius: 0.375rem !important; /* rounded-md */
+  transition: all 0.3s;
+}
+
+.p-selectbutton .p-button.p-highlight {
+  padding: 3px;
+  background-color: #FACC15 !important; /* bg-green-700 */
 }
 
 
@@ -49,6 +117,8 @@ button, input, textarea, select, label, small, a, p, h1, h2, h3, h4, h5, h6{
 }
 body { margin: 0; }
 
+
+
 /* casca da página de auth: ocupa toda a tela e tem cor/fundo */
 .auth-shell {
   min-height: 100vh;         /* altura total */
@@ -65,15 +135,19 @@ body { margin: 0; }
 /* card com largura máxima controlada */
 .p-card.auth-card {
   width: 100%;
+  padding: 3rem;
   max-width: 40rem;          /* ~640px; ajuste pra 30rem/48rem se quiser */
   border-radius: 14px;
+  background-color: var(--surface-card);
 }
 
 .custom-login-btn {
-  background-color: var(--primary-color) !important;   /* verde base */
-  border-color: #059669 !important;
+  color: white;
+  background-color: #7c8686 ;   
+  border: none;
+  transition: all 0.3s;
 }
 .custom-login-btn:hover {
-  background-color: #059669 !important;   /* verde hover */
-  border-color: #047857 !important;
+  background-color: var(--warning-color) ;   
+  
 }
