@@ -107,7 +107,7 @@ const AppShell = () => {
   const sideItems = [
     { header: 'Main' },
     { key: 'home', label: 'Home', icon: ['fas', 'house'] },
-    { key: 'operations', label: 'Operations', icon: ['fas', 'map'] },
+    { key: 'operations', label: 'Gerenciar Empresas', icon: ['fas', 'map'] },
     { key: 'orders', label: 'Work Orders', icon: ['fas', 'clipboard-list'], badge: 12 },
     { key: 'technicians', label: 'Technicians', icon: ['fas', 'users'] },
     { key: 'clients', label: 'Clients', icon: ['fas', 'user-group'] },
@@ -145,7 +145,7 @@ const AppShell = () => {
 
     const cfg = {
       home: { title: 'Home', icon: 'pi pi-home', component: 'HomePane', closable: false },
-      operations: { title: 'Operations', icon: 'pi pi-home', component: 'OperationsPane', closable: true },
+      operations: { title: 'Gerenciar Empresas', icon: 'pi pi-home', component: 'OperationsPane', closable: true },
       orders: { title: 'Work Orders', icon: 'pi pi-clipboard', component: 'OrdersPane', closable: true },
       technicians: { title: 'Technicians', icon: 'pi pi-users', component: 'TechniciansPane', closable: true },
       kpi: { title: 'KPI Details', icon: 'pi pi-users', component: 'TechniciansPane', closable: true },

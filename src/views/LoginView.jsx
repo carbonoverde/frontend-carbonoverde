@@ -94,8 +94,16 @@ const LoginView = () => {
     if (!formValid || loading) return
     setLoading(true)
     try {
-      const { access_token, user } = await login(username, password)
-      dispatch(loginSuccess({ token: access_token, user }))
+      const data = await login(username, password)
+
+      dispatch(loginSuccess({
+        token: data.token,
+        user: {
+          username: data.username,
+          role: "ADMIN",
+          clientName: "Prefeitura de Joinville"
+        }
+      }))
       dispatch(setRemember(remember))
       setMessage({ show: true, type: 'success', text: 'Welcome!' })
       setTimeout(() => navigate('/'), 1000)

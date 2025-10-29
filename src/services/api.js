@@ -17,4 +17,15 @@ export const login = async (username, password) => {
   return data
 }
 
+
+export const getCompanies = async () => {
+  const { data } = await api.get("/companies");
+  return data;
+};
+
+export const createCompany = async (companyData) => {
+  const { data } = await api.post("/companies", companyData);
+  return data;
+};
+
 export default api
