@@ -157,7 +157,8 @@ https://github.com/user-attachments/assets/25ad9acc-bb2d-4531-8e24-46125c35f21c
 
 *   **Link da Demo:** (executar localmente via Vite e Spring Boot)
     
-*   **Link do Repositório GitHub:** [https://github.com/SeuRepositorio/CarbonoVerde](https://github.com/SeuRepositorio/CarbonoVerde)
+*   **Link do Repositório backend:**
+  https://github.com/carbonoverde/backend-spring-boot
 
 *  **Link fast-api:** https://github.com/carbonoverde/backend-fast-api
     
