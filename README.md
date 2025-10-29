@@ -1,62 +1,195 @@
-# CarbonoVerde Frontend
+🌿 CarbonoVerde — Plataforma Municipal de Monitoramento da Pegada de Carbono
+============================================================================
 
-## Contexto
-A pegada de carbono é uma métrica fundamental para mensurar o impacto das atividades humanas na emissão de gases de efeito estufa (GEE), sendo essencial para o enfrentamento das mudanças climáticas. No contexto urbano, cidades como Joinville desempenham um papel central na geração dessas emissões, mas também possuem grande potencial para promover soluções e políticas de sustentabilidade.
+📘 Contexto
+-----------
 
-Este projeto nasce da necessidade de tornar visível e acessível, tanto para gestores públicos quanto para cidadãos, o mapeamento e a análise da pegada de carbono da cidade de Joinville. A ferramenta busca incentivar ações de mitigação e adaptação, promovendo uma cidade mais sustentável e resiliente.
+A **pegada de carbono** é uma métrica essencial para medir o impacto das atividades humanas nas emissões de gases de efeito estufa (GEE).Cidades como **Joinville (SC)** têm papel central na geração dessas emissões, mas também grande potencial de **liderar ações sustentáveis**.
 
-A iniciativa de monitorar a pegada de carbono proporciona embasamento para decisões responsáveis, engajamento da sociedade e cumprimento de metas ambientais locais, nacionais e globais, contribuindo positivamente para o futuro das próximas gerações.
+O **CarbonoVerde** nasce da necessidade de tornar visível e acessível, tanto para **gestores públicos** quanto para **cidadãos**, o mapeamento e a análise da pegada de carbono urbana.A ferramenta fornece dados, visualizações e relatórios que ajudam na tomada de decisões sustentáveis e na criação de políticas ambientais locais.
 
-## Objetivo
-Este projeto tem como objetivo mapear e calcular a pegada de carbono da cidade de Joinville, apresentando informações, relatórios e visualizações para acompanhamento por parte de gestores municipais e cidadãos.
+🎯 Objetivo do Projeto
+----------------------
 
-## Visão Geral
-O frontend é desenvolvido com React e utiliza arquitetura modular para oferecer uma interface responsiva e interativa. Ele se comunica com APIs para obter dados relevantes sobre emissões, bairros, operações e outros indicadores ambientais.
+Desenvolver uma plataforma digital que permita:
 
-## Estrutura do Projeto
-```
-- public/             # Arquivos públicos e estáticos
-- src/
-  - assets/           # Imagens e estilos básicos (CSS)
-  - components/       # Componentes reutilizáveis de interface
-  - data/             # Conjuntos de dados locais
-  - router/           # Configuração de rotas da aplicação
-  - services/         # Serviços para consumo de APIs e lógica relacionada
-  - slices/           # Slices de estado global com Redux (ex: autenticação)
-  - store/            # Configuração e criação da store Redux
-  - views/            # Telas principais (pages/views)
-  - style.css         # Estilos globais
-  - App.jsx           # Componente raiz da aplicação
-  - main.jsx          # Ponto de entrada do React
-```
+*   **Gestores municipais (Admin)** cadastrarem empresas e monitorarem suas emissões;
+    
+*   **Managers (gestores principais)** administrarem o sistema e controlarem acessos;
+    
+*   Calcular e exibir o **índice de compensação de carbono** e o impacto ambiental de cada empresa;
+    
+*   Apresentar **mapas e relatórios** com informações consolidadas sobre emissões.
+    
 
-## Telas Principais
-- **Login:** Para autenticação de usuários (LoginView, LoginCityhall)
-- **Dashboard:** Painel com visão geral dos dados ambientais (DashboardView)
-- **Clientes, Operações e Pedidos:** Telas para gestão de dados de clientes, operações e pedidos (CustomersView, OperationsView, OrdersView)
-- **Configurações:** Opções e ajustes do sistema (SettingsView)
+🧩 Perfis de Usuário e Funcionalidades
+--------------------------------------
 
-## Instalação e Execução
-1. Instale as dependências:
-   ```bash
-   npm install
-   ```
-2. Inicie o ambiente de desenvolvimento:
-   ```bash
-   npm run dev
-   ```
-3. O sistema pode ser acessado normalmente via navegador na porta padrão informada pelo Vite.
+### 👨‍💼 Perfis
 
-## Configuração
-- As rotas principais estão em `src/router/index.js`.
-- A comunicação com a API está em `src/services/` (ex: `api.js`, `camadaBairros.js`).
-- Gerenciamento de estado global via Redux Toolkit em `src/slices/` e `src/store/`.
+*   **Manager:** dono do sistema, com acesso total a todos os recursos.
+    
+*   **Admin:** responsável da prefeitura, pode cadastrar empresas e novos administradores.
+    
 
-## Tecnologias Principais
-- React
-- Redux Toolkit
-- Vite
-- CSS
+### 🏢 Empresas
 
-## Contato
-Dúvidas ou sugestões? Entre em contato com os desenvolvedores do projeto.
+*   Cadastro de empresas com:
+    
+    *   Nome, CNPJ, data de registro e dados de consumo (água, energia, resíduos);
+        
+    *   Busca automática de endereço via **CEP**;
+        
+    *   Obtenção automática de **geolocalização (latitude e longitude)**;
+        
+*   Exibição em tabela com informações detalhadas e visualização futura em mapa interativo.
+    
+
+### 🗺️ Visualização Ambiental
+
+*   Exibe empresas cadastradas e suas respectivas **áreas de compensação de carbono**;
+    
+*   Mostra o **percentual de cobertura verde** próximo às empresas;
+    
+*   Ajuda gestores a visualizar e planejar ações de sustentabilidade.
+    
+
+⚙️ Como Executar o Projeto Localmente
+-------------------------------------
+
+### 🧱 1. Backend — Spring Boot API
+
+#### 🔧 Pré-requisitos
+
+*   Java 17+
+    
+*   Maven
+    
+*   PostgreSQL (ou H2 para testes locais)
+    
+
+#### ▶️ Rodando o servidor
+
+`   cd backend  mvn spring-boot:run   `
+
+A API estará disponível em:👉 http://localhost:8080
+
+#### ⚙️ Configuração de CORS
+
+A aplicação permite chamadas do frontend:
+
+`   http://localhost:5173   `
+
+#### 🧾 Estrutura Simplificada da API
+
+*   **Autenticação:** JWT + Spring Security
+    
+*   **Camadas:** Controller → Service → Repository
+    
+*   **Banco de dados:** PostgreSQL com Flyway para migrações
+    
+*   **Validações:** Bean Validation (Jakarta Validation)
+    
+
+### 💻 2. Frontend — React + Vite
+
+#### 🔧 Pré-requisitos
+
+*   Node.js 18+
+    
+*   npm
+    
+
+#### ▶️ Rodando o ambiente de desenvolvimento
+
+`   cd frontend  npm install  npm run dev   `
+
+O app rodará em:👉 http://localhost:5173
+
+#### 🌎 Integrações
+
+*   **API ViaCEP:** busca automática de endereço a partir do CEP.
+    
+*   **Geolocalização (Google Maps API ou geocode.xyz):** obtém latitude e longitude do endereço.
+    
+*   **PrimeReact + Tailwind:** estilização e layout responsivo.
+    
+*   **Axios:** comunicação com o backend.
+    
+
+🌍 Demonstração (MVP)
+---------------------
+
+### 🔹 Fluxo Principal
+
+1.  Login com **usuário Manager**.
+    
+2.  Cadastro de novo **Admin** (responsável da prefeitura).
+    
+3.  Admin acessa o sistema → cadastra **nova empresa**.
+    
+4.  Sistema busca endereço via CEP → gera automaticamente **latitude e longitude**.
+    
+5.  Empresa é salva e exibida na tabela/listagem.
+    
+
+### 🔗 Links Importantes
+
+*   **Link da Demo:** (executar localmente via Vite e Spring Boot)
+    
+*   **Link do Repositório GitHub:** [https://github.com/SeuRepositorio/CarbonoVerde](https://github.com/SeuRepositorio/CarbonoVerde)
+    
+*   **Pitch de Apresentação (PDF):** CarbonoVerde - Pitch.pdf
+    
+*   **Relatório Técnico (PDF):** CarbonoVerde - Relatório Técnico.pdf
+    
+
+🧠 Requisitos do Projeto
+------------------------
+
+### 🔹 Funcionais
+
+*   Cadastro e login com autenticação JWT;
+    
+*   Cadastro e listagem de empresas;
+    
+*   Busca automática de endereço por CEP;
+    
+*   Armazenamento de latitude/longitude;
+    
+*   Perfis distintos (Manager / Admin);
+    
+*   Exibição de informações ambientais no painel.
+    
+
+### 🔹 Não Funcionais
+
+*   Acessível e responsivo (layout web adaptável);
+    
+*   Código modular e reutilizável;
+    
+*   Segurança via Spring Security e JWT;
+    
+*   Compatível com navegadores modernos;
+    
+*   API documentada e validada com Bean Validation.
+    
+
+🧩 Tecnologias Utilizadas
+-------------------------
+
+**Frontend:**React, Vite, Redux Toolkit, PrimeReact, TailwindCSS, Axios
+
+**Backend:**Spring Boot, Spring Security (JWT), JPA / Hibernate, PostgreSQL, Flyway, Lombok, Bean Validation (Jakarta)
+
+🚀 Comando Rápido de Execução Local (para demo)
+-----------------------------------------------
+# Backend (porta 8080)  
+` cd backend  mvn spring-boot:run  # Em outro terminal:  cd frontend  npm run dev   `
+
+Acesse no navegador:👉 [http://localhost:5173](http://localhost:5173)
+
+📜 Licença
+----------
+
+Projeto acadêmico desenvolvido para fins educacionais.Todos os direitos reservados © **CarbonoVerde 2025**.
