@@ -115,22 +115,42 @@ O app rodará em:👉 http://localhost:5173
 *   **PrimeReact + Tailwind:** estilização e layout responsivo.
     
 *   **Axios:** comunicação com o backend.
+
+
+  ## 👤 Usuário de Demonstração
+
+**Função:** Manager (Administrador Geral)  
+**Login:** admin  
+**Senha:** 123456  
+
+> ⚠️ Este usuário possui acesso total ao sistema para fins de demonstração.
     
 
-🌍 Demonstração (MVP)
----------------------
+## 🖼️ Demonstração
 
-### 🔹 Fluxo Principal
+### video Demo
 
-1.  Login com **usuário Manager**.
-    
-2.  Cadastro de novo **Admin** (responsável da prefeitura).
-    
-3.  Admin acessa o sistema → cadastra **nova empresa**.
-    
-4.  Sistema busca endereço via CEP → gera automaticamente **latitude e longitude**.
-    
-5.  Empresa é salva e exibida na tabela/listagem.
+
+https://github.com/user-attachments/assets/25ad9acc-bb2d-4531-8e24-46125c35f21c
+
+
+
+
+### Tela de login 
+
+<img width="1877" height="1004" alt="Captura de tela 2025-10-29 120351" src="https://github.com/user-attachments/assets/67f6ec28-332b-42dd-b6a9-f8415680e4ae" />
+
+### Tela de cadastro das empresas
+<img width="1878" height="1002" alt="Captura de tela 2025-10-29 110832" src="https://github.com/user-attachments/assets/b8b410c1-c729-45ff-ad5a-3ade3500eac4" />
+
+### Tela para cadastrar usuario (apenas maneger ou admin)
+<img width="1875" height="996" alt="Captura de tela 2025-10-29 110956" src="https://github.com/user-attachments/assets/bc0f3d3b-a9e2-4703-987d-e3100e6cdb7c" />
+
+### Tela da área das empresas 
+
+<img width="1879" height="1002" alt="Captura de tela 2025-10-29 111826" src="https://github.com/user-attachments/assets/734e0385-9ee8-4b1e-a987-9c7750fedb33" />
+
+
     
 
 ### 🔗 Links Importantes
