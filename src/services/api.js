@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api',
+  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080/api',
   withCredentials: false, // troque para true se usar cookies (ver nota)
 })
 
@@ -27,5 +27,10 @@ export const createCompany = async (companyData) => {
   const { data } = await api.post("/companies", companyData);
   return data;
 };
+
+export const registerUser = async (userData) => {
+  const { data } = await api.post('/users', userData)
+  return data
+}
 
 export default api

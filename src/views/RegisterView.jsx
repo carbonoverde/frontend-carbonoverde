@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { InputText } from 'primereact/inputtext'
@@ -7,9 +7,8 @@ import { Button } from 'primereact/button'
 import { Message } from 'primereact/message'
 import { Checkbox } from 'primereact/checkbox'
 import { Toast } from 'primereact/toast'
-import { loginSuccess, setRemember } from '../slices/authSlice'
-import { login } from '../services/api'
 import { useRef } from 'react'
+import { registerUser } from '../services/api'
 
 const RegisterView = () => {
   const navigate = useNavigate()
@@ -18,23 +17,25 @@ const RegisterView = () => {
   const [loading, setLoading] = useState(false)
   const [remember, setRememberState] = useState(false)
   const [formData, setFormData] = useState({
-    nome: '',
-    userName: '',
+    name: '',
+    username: '',
     email: '',
     password: '',
-    role: 'ADMIN'
+    city: '',
+    role: 'MANAGER'
   })
   const [errors, setErrors] = useState({
-    nome: '',
-    userName: '',
+    name: '',
+    username: '',
     email: '',
+    city: '',
     password: ''
   })
 
   const validate = () => {
     const newErrors = {}
-    if (!formData.nome.trim()) newErrors.nome = 'Nome é obrigatório'
-    if (!formData.userName.trim()) newErrors.userName = 'Nome técnico é obrigatório'
+    if (!formData.name.trim()) newErrors.name = 'name é obrigatório'
+    if (!formData.username.trim()) newErrors.username = 'name técnico é obrigatório'
     if (!formData.email.trim()) newErrors.email = 'E-mail é obrigatório'
     else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors.email = 'E-mail inválido'
     if (!formData.password.trim()) newErrors.password = 'Senha é obrigatória'
@@ -52,17 +53,7 @@ const RegisterView = () => {
     try {
       // const response = await api.post('/auth/register', formData)
       // simulação:
-      await new Promise(r => setTimeout(r, 800))
-
-      dispatch(loginSuccess({
-        token: 'fake-token',
-        user: {
-          username: formData.userName,
-          role: 'ADMIN',
-          clientName: 'Prefeitura de Joinville'
-        }
-      }))
-      dispatch(setRemember(remember))
+      await registerUser(formData)
 
       toast.current.show({
         severity: 'success',
@@ -102,27 +93,38 @@ const RegisterView = () => {
           </div>
 
           <div className="flex flex-column gap-2">
-            <label htmlFor="nome" className="text-sm font-medium">Nome Completo</label>
+            <label htmlFor="name" className="text-sm font-medium">name Completo</label>
             <InputText
-              id="nome"
-              value={formData.nome}
-              onChange={(e) => setFormData({ ...formData, nome: e.target.value })}
-              className={`w-full ctl-input ${errors.nome && 'p-invalid'}`}
+              id="name"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              className={`w-full ctl-input ${errors.name && 'p-invalid'}`}
               placeholder="Ex: Pedro Francisco"
             />
-            {errors.nome && <Message severity="error" text={errors.nome} />}
+            {errors.name && <Message severity="error" text={errors.name} />}
           </div>
 
           <div className="flex flex-column gap-2">
-            <label htmlFor="userName" className="text-sm font-medium">Nome técnico</label>
+            <label htmlFor="username" className="text-sm font-medium">name técnico</label>
             <InputText
-              id="userName"
-              value={formData.userName}
-              onChange={(e) => setFormData({ ...formData, userName: e.target.value })}
-              className={`w-full ctl-input ${errors.userName && 'p-invalid'}`}
+              id="username"
+              value={formData.username}
+              onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+              className={`w-full ctl-input ${errors.username && 'p-invalid'}`}
               placeholder="Técnico responsável"
             />
-            {errors.userName && <Message severity="error" text={errors.userName} />}
+            {errors.username && <Message severity="error" text={errors.username} />}
+          </div>
+          <div className="flex flex-column gap-2">
+            <label htmlFor="city" className="text-sm font-medium">Cidade</label>
+            <InputText
+              id="city"
+              value={formData.city}
+              onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+              className={`w-full ctl-input ${errors.city && 'p-invalid'}`}
+              placeholder="Ex: Joinville"
+            />
+            {errors.city && <Message severity="error" text={errors.city} />}
           </div>
 
           <div className="flex flex-column gap-2">
