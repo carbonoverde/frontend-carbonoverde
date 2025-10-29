@@ -1,0 +1,27 @@
+/* Seu arquivo CSS */
+
+/* 1. Remove a cor de fundo do CONTEÚDO (o quadrado branco) */
+.carbon-tooltip .leaflet-tooltip-content {
+    background-color: transparent !important; /* ⬅️ Essencial para a transparência */
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0; /* Remove o espaço extra ao redor do texto */
+    
+    /* Estilo do Texto */
+    color: white; 
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black; 
+}
+
+/* 2. Remove o container principal do Tooltip */
+.carbon-tooltip {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    color: white; 
+}
+
+/* 3. Oculta a ponta */
+.carbon-tooltip .leaflet-tooltip-tip {
+    display: none;
+}

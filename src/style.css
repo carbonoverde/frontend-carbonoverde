@@ -307,7 +307,7 @@
   content:""; position:absolute; left:1px; right:1px; bottom:-1px; height:1px;
   background:var(--surface,#fff); z-index:1;
 }
-
+ '../style.css'
 /* densidades (0→3) */
 .topbar .tab-list.density-0 { --tab-pad-x:14px; --tab-fs:.82rem; --tab-gap:10px; --tab-title-max:14ch; }
 .topbar .tab-list.density-1 { --tab-pad-x:10px; --tab-fs:.78rem; --tab-gap:8px;  --tab-title-max:10ch; }
@@ -408,6 +408,8 @@ html, body, #app { height: 100%; margin: 0; padding: 0; }
 
 /* logo */
 .logo-auth { display: block; }
+
+
 
 
 @import "tailwindcss";
