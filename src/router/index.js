@@ -6,6 +6,7 @@ import OperationsView from '@/views/OperationsView'
 import CustomersView from '@/views/CustomersView'
 import SettingsView from '@/views/SettingsView'
 import DashboardView from '../views/DashboardView'
+import RegisterView from '../views/RegisterView'
 
 export const AppRoutes = () => {
   return (
