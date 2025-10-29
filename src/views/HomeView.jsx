@@ -1,6 +1,7 @@
 import React from 'react'
-import { MapContainer, TileLayer, GeoJSON, CircleMarker, Tooltip} from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, CircleMarker, Tooltip, Popup} from 'react-leaflet'
 import {regioesData} from '../data/regioes'
+import '../styles/app.css'
 
 const Joinville_COORDERNADAS = [-26.3045, -48.8876]
 
@@ -10,11 +11,11 @@ const estiloBairro = (feature) => {
   // Classificação da cor (Você pode ajustar esses thresholds)
   let cor;
   if (carbono > 80) {
-    cor = '#006400'; // Verde Escuro (Alta Comp.)
+    cor = '#078f34'; // Verde Escuro (Alta Comp.)
   } else if (carbono > 50) {
-    cor = '#ADFF2F'; // Verde Claro (Média Comp.)
+    cor = '#b88a0c'; // Verde Claro (Média Comp.)
   } else {
-    cor = '#FF4500'; // Laranja/Vermelho (Baixa Comp.)
+    cor = '#921107'; // Laranja/Vermelho (Baixa Comp.)
   }
 
   return {
@@ -50,7 +51,7 @@ const HomeView = () => {
         center={Joinville_COORDERNADAS}
         zoom={12}
         scrollWheelZoom={false}
-        style={{height: '600px', width: '100%'}}
+        style={{height: '90vh', width: '100%'}}
       >
         <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -69,17 +70,18 @@ const HomeView = () => {
                     radius={18} 
                     pathOptions={carbono > 80 ? { 
                         color: '#333', 
-                        fillColor: '#006400', 
+                        fillColor: '#11c94e', 
                         weight: 0, 
-                        fillOpacity: 0 
+                        fillOpacity: 0,
+                        opacity: 0.0
                     } : carbono > 50 ? { 
                         color: '#333', 
-                        fillColor: '#ADFF2F', 
+                        fillColor: '#f3b610', 
                         weight: 0, 
                         fillOpacity: 0
                     } : { 
                         color: '#333', 
-                        fillColor: '#FF4500', 
+                        fillColor: '#ec1e0f', 
                         weight: 0, 
                         fillOpacity: 0
                     } }
@@ -87,10 +89,31 @@ const HomeView = () => {
                     <Tooltip 
                         permanent 
                         direction="center" 
+                        className='carbon-tooltip text-white font-black text-sm'
                     >
                         {carbono}/100%
                         
                     </Tooltip>
+                    <Popup>
+                    <div style={{ minWidth: '150px' }}>
+                        <h4 className='text-sm text-emerald-700 font-bold'>{feature.properties.nome}</h4>
+                        <hr />
+                        <strong>Carbono:</strong> {feature.properties.compensacaoCarbono}% Comp.
+                        <br /><br />
+                        
+                        <strong>Energia:</strong>
+                        <ul>
+                            <li>Gasto: {feature.properties.gastoEnergia.toLocaleString("pt-BR")} kWh</li>
+                            <li>Compensação: {feature.properties.compensacaoEnergia}%</li>
+                        </ul>
+
+                        <strong>Água:</strong>
+                        <ul>
+                            <li>Gasto: {feature.properties.gastoAgua.toLocaleString("pt-BR")} Litros</li>
+                            <li>Compensação: {feature.properties.compensacaoAgua}%</li>
+                        </ul>
+                    </div>
+                </Popup>
                 </CircleMarker>
             );
         })}
