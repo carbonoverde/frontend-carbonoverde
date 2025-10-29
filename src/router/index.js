@@ -1,12 +1,11 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import HomeView from '@/views/HomeView'
-import OrdersView from '@/views/OrdersView'
 import OperationsView from '@/views/OperationsView'
 import CustomersView from '@/views/CustomersView'
 import SettingsView from '@/views/SettingsView'
 import DashboardView from '../views/DashboardView'
-import RegisterView from '../views/RegisterView'
+
 
 export const AppRoutes = () => {
   return (

@@ -119,7 +119,7 @@ const LoginView = () => {
     <div className="auth-shell">
       <div className="flex flex-column align-items-center justify-content-center gap-4 p-3 w-full">
         <div className="logo-auth w-auto h-4rem md:h-5rem flex align-items-center justify-content-center">
-          <h1 className="text-6xl font-bold text-primary">Carbon Overde</h1>
+          <h1 className="text-6xl font-bold text-primary">Carbono Verde</h1>
         </div>
         {message.show && (
           <Message severity={message.type} closable={false} className="w-full">
@@ -129,7 +129,7 @@ const LoginView = () => {
 
         <Card className="auth-card shadow-2 w-11/12 sm:w-40rem md:w-48rem lg:w-56rem">
           <div className="text-center text-2xl font-semibold mb-4">
-            {step === 'company' ? 'Identify Your Company' : 'Access Workspace'}
+            {step === 'company' ? 'Identifique seu login' : 'Access Workspace'}
           </div>
 
           <div className="card-content ">
@@ -153,7 +153,7 @@ const LoginView = () => {
                   noValidate
                 >
                   <div className="flex flex-column gap-2 align-items-center">
-                    <label className="text-sm font-medium text-center" >Choose an identifier</label>
+                    <label className="text-sm font-medium text-center" >Escolha um identificador</label>
                     <SelectButton
                       value={identifierType}
                       onChange={(e) => setIdentifierType(e.value)}
@@ -170,7 +170,7 @@ const LoginView = () => {
                   <div className="step-inner flex flex-column gap-4">
                     <div className="flex flex-column gap-2">
                       <label htmlFor="identifier" className="text-sm font-medium">
-                        {identifierType === 'email' ? 'Company Email' : 'Workspace Handle'}
+                        {identifierType === 'email' ? 'Email Oficial' : 'Nome Corporativo'}
                       </label>
                       <InputText
                         id="identifier"
@@ -197,8 +197,8 @@ const LoginView = () => {
 
                     {/* linha de suporte */}
                     <div className="text-center text-sm support-line">
-                      Having trouble with technician access?
-                      <a className="support-link" href="mailto:support@carbonoverde.com">Contact your administrator</a>.
+                      Está com problema para fazer o login?
+                      <a className="support-link" href="mailto:support@carbonoverde.com">Entre em contato com o administrator</a>.
                     </div>
                   </div>
                 </form>
@@ -223,7 +223,7 @@ const LoginView = () => {
                   </div>
 
                   <div className="flex flex-column gap-2">
-                    <label htmlFor="username" className="text-sm font-medium">Technician</label>
+                    <label htmlFor="username" className="text-sm font-medium">Nome Corporativo</label>
                     <InputText
                       id="username"
                       value={username}
@@ -232,14 +232,14 @@ const LoginView = () => {
                       invalid={touchedAuth.username && !!usernameError}
                       onInput={() => setTouchedAuth(prev => ({ ...prev, username: true }))}
                       onBlur={() => setTouchedAuth(prev => ({ ...prev, username: true }))}
-                      placeholder="your_technician_username"
+                      placeholder="Seu nome corporativo"
                       autoComplete="username"
                       autoFocus
                     />
                   </div>
 
                   <div className="flex flex-column gap-2">
-                    <label htmlFor="password" className="text-sm font-medium">Password</label>
+                    <label htmlFor="password" className="text-sm font-medium">Senha</label>
                     <Password
                       inputId="password"
                       value={password}
@@ -261,14 +261,14 @@ const LoginView = () => {
                   <div className="flex align-items-center justify-content-between">
                   <div className="flex align-items-center gap-1">
                     <Checkbox inputId="remember" checked={remember} onChange={(e) => setRememberState(e.checked)} />
-                    <label htmlFor="remember" className="text-sm remenber">Remember me</label>
+                    <label htmlFor="remember" className="text-sm remenber">Lembrar de mim</label>
                   </div>
-                    <a className="text-sm cursor-pointer link-muted">Forgot password?</a>
+                    <a className="text-sm cursor-pointer link-muted">Esqueceu a senha?</a>
                   </div>
 
                   <Button
                     type="submit"
-                    label="Unlock"
+                    label="Desbloquear"
                     icon="pi pi-unlock"
                     className="w-full ctl-btn custom-login-btn"
                     loading={loading}
@@ -277,8 +277,8 @@ const LoginView = () => {
 
                   {/* linha de suporte */}
                   <div className="text-center text-sm support-line">
-                    Having trouble with technician access?
-                    <a className="support-link" href="mailto:support@carbonoverde.com">Contact your administrator</a>.
+                    Está com problema para fazer o login?
+                    <a className="support-link" href="mailto:support@carbonoverde.com">Entre em contato com o administrator</a>.
                   </div>
                 </form>
               )}

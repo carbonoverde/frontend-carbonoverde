@@ -9,12 +9,14 @@ import { Divider } from "primereact/divider";
 import { Calendar } from "primereact/calendar";
 import { InputNumber } from "primereact/inputnumber";
 import { Card } from "primereact/card";
+import { ProgressSpinner } from "primereact/progressspinner";
 import { getCompanies, createCompany } from "../services/api";
 
 const CompanyRegisterView = () => {
   const [companies, setCompanies] = useState([]);
   const [visible, setVisible] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [loadingAddress, setLoadingAddress] = useState(false);
   const toast = useRef(null);
 
   const [formData, setFormData] = useState({
@@ -69,6 +71,68 @@ const CompanyRegisterView = () => {
     });
   };
 
+  // Busca dados do CEP e atualiza endereço
+  const fetchAddressByCep = async (cep) => {
+    if (cep.length !== 8) return;
+    setLoadingAddress(true);
+    try {
+      const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+      const data = await response.json();
+
+      if (!data.erro) {
+        const updatedAddress = {
+          ...formData.address,
+          cep,
+          state: data.uf,
+          city: data.localidade,
+          neighborhood: data.bairro,
+          street: data.logradouro,
+        };
+        setFormData({ ...formData, address: updatedAddress });
+        await fetchCoordinates(data.logradouro, data.localidade, data.uf);
+      } else {
+        toast.current.show({
+          severity: "warn",
+          summary: "CEP não encontrado",
+          detail: "Verifique o CEP digitado.",
+        });
+      }
+    } catch {
+      toast.current.show({
+        severity: "error",
+        summary: "Erro ao buscar CEP",
+        detail: "Não foi possível obter os dados do endereço.",
+      });
+    } finally {
+      setLoadingAddress(false);
+    }
+  };
+
+  // Busca latitude e longitude com base no endereço
+  const fetchCoordinates = async (street, city, state) => {
+    try {
+      const query = `${street}, ${city}, ${state}, Brasil`;
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`
+      );
+      const data = await response.json();
+
+      if (data.length > 0) {
+        const { lat, lon } = data[0];
+        setFormData((prev) => ({
+          ...prev,
+          address: { ...prev.address, latitude: lat, longitude: lon },
+        }));
+      }
+    } catch {
+      toast.current.show({
+        severity: "warn",
+        summary: "Erro na geolocalização",
+        detail: "Não foi possível obter coordenadas.",
+      });
+    }
+  };
+
   const handleSubmit = async () => {
     setLoading(true);
     try {
@@ -104,7 +168,7 @@ const CompanyRegisterView = () => {
         />
       </div>
 
-      <Card className="shadow-2 border-round-lg ">
+      <Card className="shadow-2 border-round-lg">
         <DataTable
           value={companies}
           paginator
@@ -127,45 +191,93 @@ const CompanyRegisterView = () => {
         header="Cadastrar Nova Empresa"
         visible={visible}
         className="border-2 p-5"
-        style={{ backgroundColor: "rgba(255, 255, 255, 1)", borderRadius: "1rem", width: "60vw" }}
-        maskStyle={{ backgroundColor: "rgba(0,0,0,0.5)", backdropFilter: "blur(5px)" }}
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 1)",
+          borderRadius: "1rem",
+          width: "60vw",
+        }}
+        maskStyle={{
+          backgroundColor: "rgba(0,0,0,0.5)",
+          backdropFilter: "blur(5px)",
+        }}
         modal
         onHide={() => setVisible(false)}
       >
-        <div className="flex flex-column gap-4" >
+        <div className="flex flex-column gap-4">
           <Divider align="left">
             <span className="text-lg font-semibold">Dados da Empresa</span>
           </Divider>
 
           <div className="grid">
             <div className="col-6">
-              <label htmlFor="name" className="font-medium flex flex-col mb-1">Nome:</label>
-              <InputText id="name" placeholder="Company LTDA.." value={formData.name} onChange={handleChange} className="w-full" style={{ boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }}/>
+              <label htmlFor="name" className="font-medium flex flex-col mb-1">
+                Nome:
+              </label>
+              <InputText
+                id="name"
+                placeholder="Company LTDA.."
+                value={formData.name}
+                onChange={handleChange}
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
             <div className="col-6">
-              <label htmlFor="cnpj" className="font-medium flex flex-col mb-1">CNPJ</label>
-              <InputText id="cnpj" placeholder="00.000.000/0000-00" value={formData.cnpj} onChange={handleChange} className="w-full" style={{ boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "11rem", }} />
+              <label htmlFor="cnpj" className="font-medium flex flex-col mb-1">
+                CNPJ
+              </label>
+              <InputText
+                id="cnpj"
+                placeholder="00.000.000/0000-00"
+                value={formData.cnpj}
+                onChange={handleChange}
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "11rem",
+                }}
+              />
             </div>
             <div className="col-6">
-              <label htmlFor="dateRegistration" className="font-medium flex flex-col">Data de Registro</label>
+              <label
+                htmlFor="dateRegistration"
+                className="font-medium flex flex-col"
+              >
+                Data de Registro
+              </label>
               <Calendar
                 id="dateRegistration"
                 value={formData.dateRegistration}
-                onChange={(e) => setFormData({ ...formData, dateRegistration: e.value })}
+                onChange={(e) =>
+                  setFormData({ ...formData, dateRegistration: e.value })
+                }
                 dateFormat="dd/mm/yy"
                 placeholder="dd/mm/yy"
                 className="w-full"
-                 pt={{
+                pt={{
                   panel: {
                     style: {
-                      backgroundColor: '#fff',
-                      color: '#333',
-                      padding:"2px",
-                      width: "14rem"
+                      backgroundColor: "#fff",
+                      color: "#333",
+                      padding: "2px",
+                      width: "14rem",
                     },
                   },
                 }}
-                style={{ borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem" }}
+                style={{
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
               />
             </div>
           </div>
@@ -176,20 +288,96 @@ const CompanyRegisterView = () => {
 
           <div className="grid">
             <div className="col-3">
-              <label htmlFor="accumulatedCo2" className="font-medium flex flex-col mb-1">CO₂ Acumulado (t)</label>
-              <InputNumber id="accumulatedCo2" value={formData.accumulatedCo2} onValueChange={(e) => setFormData({ ...formData, accumulatedCo2: e.value })} className="w-full" style={{ boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }} />
+              <label
+                htmlFor="accumulatedCo2"
+                className="font-medium flex flex-col mb-1"
+              >
+                CO₂ Acumulado (t)
+              </label>
+              <InputNumber
+                id="accumulatedCo2"
+                value={formData.accumulatedCo2}
+                onValueChange={(e) =>
+                  setFormData({ ...formData, accumulatedCo2: e.value })
+                }
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
             <div className="col-3">
-              <label htmlFor="monthlyEnergyConsumption" className="font-medium flex flex-col mb-1">Energia (kWh)</label>
-              <InputNumber id="monthlyEnergyConsumption" value={formData.monthlyEnergyConsumption} onValueChange={(e) => setFormData({ ...formData, monthlyEnergyConsumption: e.value })} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }} />
+              <label
+                htmlFor="monthlyEnergyConsumption"
+                className="font-medium flex flex-col mb-1"
+              >
+                Energia (kWh)
+              </label>
+              <InputNumber
+                id="monthlyEnergyConsumption"
+                value={formData.monthlyEnergyConsumption}
+                onValueChange={(e) =>
+                  setFormData({ ...formData, monthlyEnergyConsumption: e.value })
+                }
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
             <div className="col-3">
-              <label htmlFor="monthlyWaterConsumption" className="font-medium flex flex-col mb-1">Água (m³)</label>
-              <InputNumber id="monthlyWaterConsumption" value={formData.monthlyWaterConsumption} onValueChange={(e) => setFormData({ ...formData, monthlyWaterConsumption: e.value })} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }} />
+              <label
+                htmlFor="monthlyWaterConsumption"
+                className="font-medium flex flex-col mb-1"
+              >
+                Água (m³)
+              </label>
+              <InputNumber
+                id="monthlyWaterConsumption"
+                value={formData.monthlyWaterConsumption}
+                onValueChange={(e) =>
+                  setFormData({ ...formData, monthlyWaterConsumption: e.value })
+                }
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
             <div className="col-3">
-              <label htmlFor="monthlyWaste" className="font-medium flex flex-col mb-1">Resíduos (kg)</label>
-              <InputNumber id="monthlyWaste" value={formData.monthlyWaste} onValueChange={(e) => setFormData({ ...formData, monthlyWaste: e.value })} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }}/>
+              <label
+                htmlFor="monthlyWaste"
+                className="font-medium flex flex-col mb-1"
+              >
+                Resíduos (kg)
+              </label>
+              <InputNumber
+                id="monthlyWaste"
+                value={formData.monthlyWaste}
+                onValueChange={(e) =>
+                  setFormData({ ...formData, monthlyWaste: e.value })
+                }
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
           </div>
 
@@ -199,39 +387,165 @@ const CompanyRegisterView = () => {
 
           <div className="grid">
             <div className="col-3">
-              <label htmlFor="cep" className="font-medium flex flex-col mb-1">CEP</label>
-              <InputText id="cep" placeholder="Ex: 00000-000" value={formData.address.cep} onChange={handleAddressChange} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }}/>
+              <label htmlFor="cep" className="font-medium flex flex-col mb-1">
+                CEP
+              </label>
+              <div className="flex align-items-center gap-2">
+                <InputText
+                  id="cep"
+                  placeholder="Ex: 00000-000"
+                  value={formData.address.cep}
+                  onChange={(e) => {
+                    const cep = e.target.value.replace(/\D/g, "");
+                    setFormData({
+                      ...formData,
+                      address: { ...formData.address, cep },
+                    });
+                    if (cep.length === 8) fetchAddressByCep(cep);
+                  }}
+                  className="w-full"
+                  style={{
+                    boxShadow: "none",
+                    outline: "none",
+                    borderBottom: "1px solid black",
+                    padding: "2px",
+                    maxWidth: "10rem",
+                  }}
+                />
+                {loadingAddress && (
+                  <ProgressSpinner
+                    style={{ width: "20px", height: "20px" }}
+                    strokeWidth="4"
+                  />
+                )}
+              </div>
             </div>
+
             <div className="col-3">
-              <label htmlFor="state" className="font-medium flex flex-col mb-1">Estado</label>
-              <InputText id="state" placeholder="Ex: SC" value={formData.address.state} onChange={handleAddressChange} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }}/>
+              <label htmlFor="state" className="font-medium flex flex-col mb-1">
+                Estado
+              </label>
+              <InputText
+                id="state"
+                value={formData.address.state}
+                onChange={handleAddressChange}
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
+
             <div className="col-3">
-              <label htmlFor="city" className="font-medium flex flex-col mb-1">Cidade</label>
-              <InputText id="city" placeholder="Ex: Joinville" value={formData.address.city} onChange={handleAddressChange} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }}/>
+              <label htmlFor="city" className="font-medium flex flex-col mb-1">
+                Cidade
+              </label>
+              <InputText
+                id="city"
+                value={formData.address.city}
+                onChange={handleAddressChange}
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
+
             <div className="col-3">
-              <label htmlFor="neighborhood" className="font-medium flex flex-col mb-1">Bairro</label>
-              <InputText id="neighborhood" placeholder="Ex: Boa vista" value={formData.address.neighborhood} onChange={handleAddressChange} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }}/>
+              <label
+                htmlFor="neighborhood"
+                className="font-medium flex flex-col mb-1"
+              >
+                Bairro
+              </label>
+              <InputText
+                id="neighborhood"
+                value={formData.address.neighborhood}
+                onChange={handleAddressChange}
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
+
             <div className="col-6">
-              <label htmlFor="street" className="font-medium flex flex-col mb-1">Rua</label>
-              <InputText id="street" placeholder="Ex: Avenida Padrinho Rocha" value={formData.address.street} onChange={handleAddressChange} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "16rem", }}/>
+              <label htmlFor="street" className="font-medium flex flex-col mb-1">
+                Rua
+              </label>
+              <InputText
+                id="street"
+                value={formData.address.street}
+                onChange={handleAddressChange}
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "16rem",
+                }}
+              />
             </div>
+
             <div className="col-3">
-              <label htmlFor="number" className="font-medium flex flex-col mb-1">Número</label>
-              <InputText id="number" placeholder="Ex: 40" value={formData.address.number} onChange={handleAddressChange} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }}/>
+              <label htmlFor="number" className="font-medium flex flex-col mb-1">
+                Número
+              </label>
+              <InputText
+                id="number"
+                value={formData.address.number}
+                onChange={handleAddressChange}
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
+
             <div className="col-3">
-              <label htmlFor="complement" className="font-medium flex flex-col mb-1">Complemento</label>
-              <InputText id="complement" placeholder="Ex: Lateral da rua Boa vista" value={formData.address.complement} onChange={handleAddressChange} className="w-full" style={{boxShadow: 'none', outline: 'none', borderBottom: "1px solid black", padding: "2px", maxWidth: "10rem", }}/>
+              <label
+                htmlFor="complement"
+                className="font-medium flex flex-col mb-1"
+              >
+                Complemento
+              </label>
+              <InputText
+                id="complement"
+                value={formData.address.complement}
+                onChange={handleAddressChange}
+                className="w-full"
+                style={{
+                  boxShadow: "none",
+                  outline: "none",
+                  borderBottom: "1px solid black",
+                  padding: "2px",
+                  maxWidth: "10rem",
+                }}
+              />
             </div>
           </div>
 
           <div className="flex justify-space-between mt-3 gap-3">
             <Button
               label="Cancelar"
-              className="p-button-text mr-2 "
+              className="p-button-text mr-2"
               onClick={() => setVisible(false)}
             />
             <Button

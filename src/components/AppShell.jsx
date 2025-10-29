@@ -22,6 +22,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { addTab, activateTab, closeTab, reorderTabs, setDensity, loadTabs } from '../slices/tabsSlice'
 import HomeView from '../views/HomeView'
 import OperationsView from '../views/OperationsView'
+import OrdersView from '../views/OrdersView'
 
 // Sortable Tab Component
 const SortableTab = ({ tab, isActive, onActivate, onClose }) => {
@@ -108,7 +109,7 @@ const AppShell = () => {
     { header: 'Main' },
     { key: 'home', label: 'Home', icon: ['fas', 'house'] },
     { key: 'operations', label: 'Gerenciar Empresas', icon: ['fas', 'map'] },
-    { key: 'orders', label: 'Work Orders', icon: ['fas', 'clipboard-list'], badge: 12 },
+    { key: 'orders', label: 'Criar novo usuario', icon: ['fas', 'clipboard-list']},
     { key: 'technicians', label: 'Technicians', icon: ['fas', 'users'] },
     { key: 'clients', label: 'Clients', icon: ['fas', 'user-group'] },
 
@@ -126,7 +127,7 @@ const AppShell = () => {
   /** Pedaços de UI (demos). Em prod, troque por imports de componentes reais. */
   const panes = {
     HomePane: HomeView,
-    OrdersPane: () => <div className="pane"><h2>Work Orders</h2><p>Conteúdo de ordens de serviço.</p></div>,
+    OrdersPane: OrdersView,
     ClientsPane: () => <div className="pane"><h2>Clients</h2><p>Lista/gestão de clientes.</p></div>,
     SettingsPane: () => <div className="pane"><h2>Settings</h2><p>Preferências do sistema.</p></div>,
     OperationsPane: OperationsView,
